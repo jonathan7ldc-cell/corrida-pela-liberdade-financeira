@@ -11,8 +11,8 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - run: chmod +x gradlew
-      - run: ./gradlew bundleRelease
+      - run: ./gradlew bundleDebug
       - uses: actions/upload-artifact@v4
         with:
-          name: meu-aab
-          path: app/build/outputs/bundle/release/*.aab
+          name: meu-aab-debug
+          path: app/build/outputs/bundle/debug/*.aab
