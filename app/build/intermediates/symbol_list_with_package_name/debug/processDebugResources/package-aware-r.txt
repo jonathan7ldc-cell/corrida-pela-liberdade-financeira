@@ -1,0 +1,11 @@
+br.com.liberdadefinanceira.corrida
+bool logsender_enabled
+color app_green
+drawable ic_androidide_log
+drawable ic_launcher
+string msg_bind_service_failed
+string notification_action_exit
+string notification_channel_name
+string notification_text
+string notification_title
+style AppTheme

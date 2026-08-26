@@ -1,0 +1,10 @@
+br.com.liberdadefinanceira.corrida:style/AppTheme = 0x7f050000
+br.com.liberdadefinanceira.corrida:string/notification_text = 0x7f040003
+br.com.liberdadefinanceira.corrida:string/notification_channel_name = 0x7f040002
+br.com.liberdadefinanceira.corrida:string/msg_bind_service_failed = 0x7f040000
+br.com.liberdadefinanceira.corrida:drawable/ic_launcher = 0x7f030001
+br.com.liberdadefinanceira.corrida:string/notification_action_exit = 0x7f040001
+br.com.liberdadefinanceira.corrida:drawable/ic_androidide_log = 0x7f030000
+br.com.liberdadefinanceira.corrida:string/notification_title = 0x7f040004
+br.com.liberdadefinanceira.corrida:color/app_green = 0x7f020000
+br.com.liberdadefinanceira.corrida:bool/logsender_enabled = 0x7f010000

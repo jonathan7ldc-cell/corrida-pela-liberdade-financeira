@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Corrida pela Liberdade Financeira</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f5f5f5;font-family:Arial,sans-serif}
+  body{display:flex;align-items:center;justify-content:center}
+  #wrap{position:relative;width:100%;height:100%;max-width:900px;background:linear-gradient(#eaf7ff,#fff);overflow:hidden}
+  canvas{display:block;width:100%;height:100%}
+  #hud{position:absolute;top:12px;left:14px;right:14px;display:flex;justify-content:space-between;gap:10px;pointer-events:none;font-weight:700;color:#1d2939}
+  .pill{background:rgba(255,255,255,.88);border:1px solid #d0d5dd;border-radius:999px;padding:8px 12px;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  #start,#gameover,#win{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;background:rgba(255,255,255,.9);padding:24px}
+  .panel{max-width:560px;background:#fff;border:1px solid #d0d5dd;border-radius:22px;padding:28px;box-shadow:0 15px 45px rgba(0,0,0,.15)}
+  h1{margin:0 0 12px;font-size:clamp(27px,7vw,48px);color:#157347}
+  h2{margin:0 0 12px;font-size:clamp(25px,6vw,42px)}
+  p{color:#475467;line-height:1.5}
+  button{border:0;border-radius:14px;padding:14px 24px;font-size:17px;font-weight:800;background:#157347;color:#fff;cursor:pointer;box-shadow:0 5px 0 #0d4d30}
+  button:active{transform:translateY(3px);box-shadow:0 2px 0 #0d4d30}
+  .hidden{display:none!important}
+  #hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:13px;color:#667085;background:rgba(255,255,255,.8);padding:7px 11px;border-radius:10px;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game"></canvas>
+  <div id="hud">
+    <div class="pill">Obstáculos: <span id="count">0</span></div>
+    <div class="pill">Pontuação: <span id="score">0</span></div>
+    <div class="pill">Dificuldade: <span id="difficulty">1</span></div>
+  </div>
+  <div id="hint">Toque na tela ou pressione Espaço para pular</div>
+
+  <div id="start">
+    <div class="panel">
+      <h1>Corrida pela<br>Liberdade Financeira</h1>
+      <p>Ajude o jovem a avançar pela estrada e desviar de até <b>10 obstáculos</b>: carga tributária, impostos, juros e taxas altas.</p>
+      <p><b>Controles:</b> toque na tela ou pressione Espaço/↑ para pular.</p>
+      <button id="startBtn">COMEÇAR</button>
+    </div>
+  </div>
+
+  <div id="gameover" class="hidden">
+    <div class="panel">
+      <h2>💥 Obstáculo atingido!</h2>
+      <p id="failText"></p>
+      <button id="retryBtn">TENTAR NOVAMENTE</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const wrap=document.getElementById('wrap');
+let W,H,dpr;
+function resize(){
+  dpr=Math.min(devicePixelRatio||1,2);
+  W=wrap.clientWidth; H=wrap.clientHeight;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+addEventListener('resize',resize); resize();
+
+const obstacles=[
+  {name:'CARGA TRIBUTÁRIA ALTA',icon:'⚖️'},
+  {name:'IMPOSTO ALTO',icon:'💸'},
+  {name:'JUROS ALTOS',icon:'📈'},
+  {name:'TAXA ALTÍSSIMA',icon:'💰'},
+  {name:'IMPOSTOS ALTOS',icon:'🧾'},
+  {name:'JUROS ALTOS',icon:'🏦'},
+  {name:'TAXAS ALTAS',icon:'💳'},
+  {name:'CARGA TRIBUTÁRIA',icon:'📦'},
+  {name:'IMPOSTO ALTO',icon:'💵'},
+  {name:'JUROS + TAXAS',icon:'⚠️'}
+];
+
+let running=false,won=false,last=0,spawnTimer=0,score=0,passed=0,speed=360;
+let player,obs=[],particles=[];
+
+function reset(){
+  player={x:W*.14,y:0,w:42,h:58,vy:0,onGround:true};
+  obs=[];particles=[];score=0;passed=0;
+  // Velocidade inicial confortável para o jogador aprender a mecânica.
+  speed=Math.max(285,W*.43);
+  document.getElementById('count').textContent='0';
+  document.getElementById('score').textContent='0';
+}
+function groundY(){return H*.79}
+function jump(){
+  if(!running)return;
+  // Pulo mais alto para facilitar a ultrapassagem dos obstáculos.
+  if(player.onGround){
+    player.vy=-Math.min(900,H*1.18);
+    player.onGround=false;
+  }
+}
+addEventListener('keydown',e=>{
+  if(['Space','ArrowUp'].includes(e.code)){e.preventDefault();jump()}
+});
+canvas.addEventListener('pointerdown',jump);
+
+function spawn(){
+  const cycleIndex = passed % obstacles.length;
+  const o=obstacles[cycleIndex];
+
+  // Obstáculos compactos: suficientemente altos para exigir o pulo,
+  // mas nunca largos demais para impedir uma ultrapassagem limpa.
+  const w = Math.max(48, Math.min(72, W * .13));
+  const h = Math.max(42, Math.min(66, H * .085));
+
+  // A cada bloco de 10 obstáculos, o nível de dificuldade sobe.
+  // A dificuldade cresce continuamente, sem limite.
+  const difficulty = Math.floor(passed / 10) + 1;
+
+  obs.push({
+    x: W + 30,
+    y: groundY() - h,
+    w,
+    h,
+    label: o.name,
+    icon: o.icon,
+    done: false,
+    difficulty
+  });
+}
+function rectsOverlap(a,b){
+  return a.x<b.x+b.w && a.x+a.w>b.x && a.y<b.y+b.h && a.y+a.h>b.y;
+}
+function drawBackground(){
+  ctx.fillStyle='#eaf7ff';ctx.fillRect(0,0,W,H);
+  // clouds
+  ctx.fillStyle='rgba(255,255,255,.9)';
+  for(let x=-30;x<W;x+=180){
+    ctx.beginPath();ctx.arc(x+35,H*.17,18,0,Math.PI*2);ctx.arc(x+58,H*.15,25,0,Math.PI*2);ctx.arc(x+85,H*.17,17,0,Math.PI*2);ctx.fill();
+  }
+  const gy=groundY();
+  ctx.fillStyle='#c7d0d9';ctx.fillRect(0,gy,W,H-gy);
+  ctx.strokeStyle='#667085';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke();
+  ctx.strokeStyle='rgba(102,112,133,.35)';ctx.lineWidth=2;
+  const offset=(score*2)%60;
+  for(let x=-60+offset;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,gy+18);ctx.lineTo(x+30,gy+18);ctx.stroke()}
+}
+function drawPlayer(){
+  const x=player.x,y=player.y;
+  // shadow
+  ctx.fillStyle='rgba(0,0,0,.15)';ctx.beginPath();ctx.ellipse(x+player.w/2,groundY()+5,24,6,0,0,Math.PI*2);ctx.fill();
+  // legs
+  ctx.strokeStyle='#243b53';ctx.lineWidth=7;ctx.lineCap='round';
+  const legSwing=Math.sin(score/6)*7;
+  ctx.beginPath();ctx.moveTo(x+15,y+43);ctx.lineTo(x+10-legSwing/2,y+58);ctx.moveTo(x+29,y+43);ctx.lineTo(x+34+legSwing/2,y+58);ctx.stroke();
+  // body
+  ctx.fillStyle='#1976d2';ctx.fillRect(x+9,y+18,25,29);
+  // head
+  ctx.fillStyle='#f2c29b';ctx.beginPath();ctx.arc(x+22,y+11,12,0,Math.PI*2);ctx.fill();
+  // hair
+  ctx.fillStyle='#4a2f24';ctx.beginPath();ctx.arc(x+22,y+5,12,Math.PI,Math.PI*2);ctx.fill();
+  // arm
+  ctx.strokeStyle='#f2c29b';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(x+33,y+25);ctx.lineTo(x+42,y+35);ctx.stroke();
+}
+function drawObstacle(o){
+  ctx.save();
+  // warning glow
+  ctx.fillStyle='rgba(255,193,7,.18)';ctx.fillRect(o.x-5,o.y-5,o.w+10,o.h+10);
+  ctx.fillStyle='#8b1e1e';ctx.fillRect(o.x,o.y,o.w,o.h);
+  ctx.strokeStyle='#5b1212';ctx.lineWidth=3;ctx.strokeRect(o.x,o.y,o.w,o.h);
+  ctx.fillStyle='#fff';ctx.font=`${Math.max(20,o.h*.36)}px Arial`;ctx.textAlign='center';
+  ctx.fillText(o.icon,o.x+o.w/2,o.y+o.h*.48);
+  ctx.font=`bold ${Math.max(7,Math.min(10,W*.018))}px Arial`;
+  // label inside box, wrapped
+  const words=o.label.split(' ');let line='',lines=[];
+  for(const word of words){
+    const test=line?line+' '+word:word;
+    if(ctx.measureText(test).width>o.w-8){lines.push(line);line=word}else line=test;
+  }
+  if(line)lines.push(line);
+  const start=o.y+o.h-4-(lines.length-1)*10;
+  lines.forEach((l,i)=>ctx.fillText(l,o.x+o.w/2,start+i*10));
+  ctx.restore();
+}
+function addParticles(x,y,n=12){
+  for(let i=0;i<n;i++)particles.push({x,y,vx:(Math.random()-.5)*100,vy:(Math.random()-.8)*120,life:.7})
+}
+function update(dt){
+  score+=dt*10;
+  // A velocidade aumenta continuamente. A cada 10 obstáculos
+  // a progressão fica mais perceptível, como em um endless runner.
+  const difficultyLevel = Math.floor(passed / 10) + 1;
+  const speedTarget = Math.max(285, W*.43) + (difficultyLevel - 1) * 42;
+  speed += (speedTarget - speed) * Math.min(1, dt * 0.7);
+  player.vy+=1900*dt;player.y+=player.vy*dt;
+  const gy=groundY()-player.h;
+  if(player.y>=gy){player.y=gy;player.vy=0;player.onGround=true}
+  spawnTimer-=dt;
+  if(spawnTimer<=0){
+    spawn();
+    // A cada 10 obstáculos, o intervalo diminui um pouco.
+    // Mantemos um limite para que a corrida continue sendo jogável.
+    const level = Math.floor(passed / 10);
+    const interval = 1.38 - Math.min(level * 0.08, 0.52);
+    spawnTimer = Math.max(.86, interval);
+  }
+  for(let i=obs.length-1;i>=0;i--){
+    const o=obs[i];o.x-=speed*dt;
+    if(!o.done && o.x+o.w<player.x){
+      o.done=true;passed++;document.getElementById('count').textContent=passed;
+      addParticles(o.x,o.y,8);
+      // A cada 10 obstáculos o nível aumenta automaticamente.
+      // Não há tela de vitória: a corrida continua indefinidamente.
+    }
+    if(rectsOverlap({x:player.x+9,y:player.y+6,w:player.w-18,h:player.h-9},o)){
+      gameOver(o.label);return
+    }
+    if(o.x+o.w<-30)obs.splice(i,1);
+  }
+  for(let i=particles.length-1;i>=0;i--){
+    const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=200*dt;p.life-=dt;
+    if(p.life<=0)particles.splice(i,1)
+  }
+  document.getElementById('score').textContent=Math.floor(score);
+  const level = Math.floor(passed / 10) + 1;
+  document.getElementById('difficulty').textContent=level;
+}
+function draw(){
+  drawBackground();
+  obs.forEach(drawObstacle);
+  drawPlayer();
+  particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle='#157347';ctx.fillRect(p.x,p.y,4,4);ctx.globalAlpha=1});
+}
+function loop(t){
+  if(!running)return;
+  const dt=Math.min(.032,(t-last)/1000||0);last=t;
+  update(dt);draw();requestAnimationFrame(loop)
+}
+function start(){
+  reset();running=true;won=false;
+  document.getElementById('start').classList.add('hidden');
+  document.getElementById('gameover').classList.add('hidden');
+  const winPanel=document.getElementById('win');
+  if(winPanel) winPanel.classList.add('hidden');
+  last=performance.now();requestAnimationFrame(loop);
+}
+function gameOver(label){
+  running=false;
+  document.getElementById('failText').innerHTML=`Você bateu no obstáculo <b>${label}</b>.<br>Obstáculos superados: <b>${passed}</b>.`;
+  document.getElementById('gameover').classList.remove('hidden');
+}
+
+document.getElementById('startBtn').onclick=start;
+document.getElementById('retryBtn').onclick=start;
+const playAgainBtn=document.getElementById('playAgainBtn');
+if(playAgainBtn) playAgainBtn.onclick=start;
+reset();draw();
+</script>
+</body>
+</html>

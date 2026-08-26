@@ -1,0 +1,9 @@
+br.com.liberdadefinanceira.corrida.app-logsender-0 /data/data/com.itsaky.androidide/files/home/.gradle/caches/8.14.3/transforms/0b97fc46910d1d6c01fe4d153afcf0cb/transformed/logsender/res
+br.com.liberdadefinanceira.corrida.app-pngs-1 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/generated/res/pngs/debug
+br.com.liberdadefinanceira.corrida.app-resValues-2 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/generated/res/resValues/debug
+br.com.liberdadefinanceira.corrida.app-updated_navigation_xml-3 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/generated/updated_navigation_xml/debug
+br.com.liberdadefinanceira.corrida.app-packageDebugResources-4 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+br.com.liberdadefinanceira.corrida.app-packageDebugResources-5 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+br.com.liberdadefinanceira.corrida.app-debug-6 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/intermediates/merged_res/debug/mergeDebugResources
+br.com.liberdadefinanceira.corrida.app-debug-7 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/src/debug/res
+br.com.liberdadefinanceira.corrida.app-main-8 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/src/main/res

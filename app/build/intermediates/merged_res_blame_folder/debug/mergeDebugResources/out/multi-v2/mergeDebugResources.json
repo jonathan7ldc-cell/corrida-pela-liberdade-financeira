@@ -1,0 +1,77 @@
+{
+    "logs": [
+        {
+            "outputFile": "br.com.liberdadefinanceira.corrida.app-debug-5:/values-in_values-in.arsc.flat",
+            "map": [
+                {
+                    "source": "/data/data/com.itsaky.androidide/files/home/.gradle/caches/8.14.3/transforms/0b97fc46910d1d6c01fe4d153afcf0cb/transformed/logsender/res/values-in/values-in.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,141,201,273,347",
+                        "endColumns": "85,59,71,73,64",
+                        "endOffsets": "136,196,268,342,407"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "br.com.liberdadefinanceira.corrida.app-debug-5:/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "/storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/src/main/res/values/colors.xml",
+                    "from": {
+                        "startLines": "0",
+                        "startColumns": "11",
+                        "startOffsets": "11",
+                        "endColumns": "50",
+                        "endOffsets": "50"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "102",
+                        "endColumns": "43",
+                        "endOffsets": "141"
+                    }
+                },
+                {
+                    "source": "/storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/src/main/res/values/styles.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endLines": "7",
+                        "endColumns": "12",
+                        "endOffsets": "400"
+                    },
+                    "to": {
+                        "startLines": "9",
+                        "startColumns": "4",
+                        "startOffsets": "500",
+                        "endLines": "15",
+                        "endColumns": "12",
+                        "endOffsets": "884"
+                    }
+                },
+                {
+                    "source": "/data/data/com.itsaky.androidide/files/home/.gradle/caches/8.14.3/transforms/0b97fc46910d1d6c01fe4d153afcf0cb/transformed/logsender/res/values/values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,102,187,245,317,391",
+                        "endColumns": "46,84,57,71,73,64",
+                        "endOffsets": "97,182,240,312,386,451"
+                    },
+                    "to": {
+                        "startLines": "2,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,146,231,289,361,435",
+                        "endColumns": "46,84,57,71,73,64",
+                        "endOffsets": "97,226,284,356,430,495"
+                    }
+                }
+            ]
+        }
+    ]
+}

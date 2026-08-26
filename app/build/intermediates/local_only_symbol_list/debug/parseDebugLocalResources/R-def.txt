@@ -1,0 +1,5 @@
+R_DEF: Internal format may change without notice
+local
+color app_green
+drawable ic_launcher
+style AppTheme

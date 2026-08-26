@@ -1,0 +1,45 @@
+{
+    "logs": [
+        {
+            "outputFile": "br.com.liberdadefinanceira.corrida.app-release-4:/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "/storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/src/main/res/values/colors.xml",
+                    "from": {
+                        "startLines": "0",
+                        "startColumns": "11",
+                        "startOffsets": "11",
+                        "endColumns": "50",
+                        "endOffsets": "50"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "43",
+                        "endOffsets": "94"
+                    }
+                },
+                {
+                    "source": "/storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/src/main/res/values/styles.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endLines": "7",
+                        "endColumns": "12",
+                        "endOffsets": "400"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "99",
+                        "endLines": "9",
+                        "endColumns": "12",
+                        "endOffsets": "483"
+                    }
+                }
+            ]
+        }
+    ]
+}

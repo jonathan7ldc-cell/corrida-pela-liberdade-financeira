@@ -1,0 +1,29 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'br.com.liberdadefinanceira.corrida'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'br.com.liberdadefinanceira.corrida'
+        minSdk 23
+        targetSdk 36
+        versionCode 1
+        versionName '1.0.0'
+    }
+    signingConfigs {
+        release {
+            storeFile file('upload-keystore.jks')
+            storePassword '12345678'
+            keyAlias 'upload'
+            keyPassword '12345678'
+        }
+    } 
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}

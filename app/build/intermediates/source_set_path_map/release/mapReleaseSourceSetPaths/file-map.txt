@@ -1,0 +1,8 @@
+br.com.liberdadefinanceira.corrida.app-pngs-0 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/generated/res/pngs/release
+br.com.liberdadefinanceira.corrida.app-resValues-1 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/generated/res/resValues/release
+br.com.liberdadefinanceira.corrida.app-updated_navigation_xml-2 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/generated/updated_navigation_xml/release
+br.com.liberdadefinanceira.corrida.app-packageReleaseResources-3 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/intermediates/incremental/release/packageReleaseResources/merged.dir
+br.com.liberdadefinanceira.corrida.app-packageReleaseResources-4 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/intermediates/incremental/release/packageReleaseResources/stripped.dir
+br.com.liberdadefinanceira.corrida.app-release-5 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/build/intermediates/merged_res/release/mergeReleaseResources
+br.com.liberdadefinanceira.corrida.app-main-6 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/src/main/res
+br.com.liberdadefinanceira.corrida.app-release-7 /storage/emulated/0/corrida_pela_liberdade_financeira_android (1)/finance-runner-android/app/src/release/res

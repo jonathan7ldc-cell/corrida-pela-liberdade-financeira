@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="logsender_enabled">true</bool>
+    <color name="app_green">#157347</color>
+    <string name="msg_bind_service_failed">Failed to bind to Code On The Go</string>
+    <string name="notification_action_exit">Exit</string>
+    <string name="notification_channel_name">LogSender Service</string>
+    <string name="notification_text">Connected to Code On The Go</string>
+    <string name="notification_title">LogSender Service</string>
+    <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#157347</item>
+        <item name="android:navigationBarColor">#F5F5F5</item>
+        <item name="android:statusBarColor">#F5F5F5</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
